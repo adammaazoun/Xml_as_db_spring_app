@@ -1,0 +1,14 @@
+<xs:element name="Projects">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="Project" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="managerId" type="xs:int" />
+                        <xs:element name="taskIds" type="xs:int" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>

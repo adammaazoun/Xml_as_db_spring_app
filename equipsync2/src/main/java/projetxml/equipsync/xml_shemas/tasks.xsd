@@ -1,0 +1,15 @@
+<xs:element name="Tasks">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="Task" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="taskId" type="xs:int" />
+                        <xs:element name="employeeId" type="xs:int" />
+                        <xs:element name="equipmentId" type="xs:int" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
