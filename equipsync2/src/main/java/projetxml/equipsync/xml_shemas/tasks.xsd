@@ -8,8 +8,9 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="taskId" type="xs:int" />
-                        <xs:element name="employeeId" type="xs:int" />
+                        <xs:element name="projectId" type="xs:int" />
                         <xs:element name="equipmentId" type="xs:int" />
+                        <xs:element name="description" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

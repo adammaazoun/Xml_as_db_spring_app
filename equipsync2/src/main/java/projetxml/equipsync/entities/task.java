@@ -2,8 +2,7 @@ package projetxml.equipsync.entities;
 
 public class task {
     private int taskId;
-    private int[] employeeId;
-    private int[] equipmentId;
+    private int equipmentId;
     private int projectId;
     private String description;
 
@@ -24,19 +23,12 @@ public class task {
         this.taskId = taskId;
     }
 
-    public int[] getEmployeeId() {
-        return employeeId;
-    }
 
-    public void setEmployeeId(int[] employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public int[] getEquipmentId() {
+    public int getEquipmentId() {
         return equipmentId;
     }
 
-    public void setEquipmentId(int[] equipmentId) {
+    public void setEquipmentId(int equipmentId) {
         this.equipmentId = equipmentId;
     }
     public int getProjectId() {

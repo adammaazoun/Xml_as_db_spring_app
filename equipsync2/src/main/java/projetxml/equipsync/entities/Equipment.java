@@ -4,7 +4,7 @@ public class Equipment {
     private int equipmentId;
     private String details;
     private String status;
-    private int[] employeeId;
+    private int employeeId;
 
     // Getters and Setters
     public int getEquipmentId() {
@@ -31,11 +31,11 @@ public class Equipment {
         this.status = status;
     }
 
-    public int[] getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int[] employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 }
