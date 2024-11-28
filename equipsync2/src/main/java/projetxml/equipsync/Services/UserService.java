@@ -53,7 +53,7 @@ public class UserService {
     }
 
 
-    public String getUserById(String id) {
+    public String getUserById(int id) {
         try {
             baseXService.openDatabase("UserDatabase");
             String xQuery = String.format(
