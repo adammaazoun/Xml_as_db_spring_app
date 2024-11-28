@@ -1,6 +1,6 @@
 package projetxml.equipsync.entities;
 
-public class task {
+public class Task {
     private int taskId;
     private int equipmentId;
     private int projectId;
