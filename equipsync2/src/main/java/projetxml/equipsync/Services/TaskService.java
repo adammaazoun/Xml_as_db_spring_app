@@ -32,11 +32,11 @@ public class TaskService {
             // XQuery to insert the task
             String xQuery = String.format(
                     "let $task := %s\n" +
-                            "return insert node $task into doc('TaskDatabase/Tasks.xml')/tasks",
+                            "return insert node $task into doc('equipsync_db/Tasks.xml')/tasks",
                     taskXml
             );
 
-            baseXService.openDatabase("TaskDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error inserting task: " + e.getMessage();
@@ -46,8 +46,8 @@ public class TaskService {
     // Get All Tasks
     public String getAllTasks() {
         try {
-            String xQuery = "for $task in doc('TaskDatabase/Tasks.xml')/tasks/task return $task";
-            baseXService.openDatabase("TaskDatabase");
+            String xQuery = "for $task in doc('equipsync_db/Tasks.xml')/tasks/task return $task";
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching tasks: " + e.getMessage();
@@ -58,11 +58,11 @@ public class TaskService {
     public String getTaskById(int id) {
         try {
             String xQuery = String.format(
-                    "for $task in doc('TaskDatabase/Tasks.xml')/tasks/task " +
+                    "for $task in doc('equipsync_db/Tasks.xml')/tasks/task " +
                             "where $task/taskId = '%d' return $task",
                     id
             );
-            baseXService.openDatabase("TaskDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching task with ID " + id + ": " + e.getMessage();
@@ -76,7 +76,7 @@ public class TaskService {
                     "delete node doc('TaskDatabase/Tasks.xml')/tasks/task[taskId = '%d']",
                     id
             );
-            baseXService.openDatabase("TaskDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error deleting task with ID " + id + ": " + e.getMessage();
@@ -102,18 +102,18 @@ public class TaskService {
 
             // Delete the existing task node
             String deleteXQuery = String.format(
-                    "delete node doc('TaskDatabase/Tasks.xml')/tasks/task[taskId = '%d']",
+                    "delete node doc('equipsync_db/Tasks.xml')/tasks/task[taskId = '%d']",
                     task.getTaskId()
             );
 
             // Insert the updated task node
             String insertXQuery = String.format(
                     "let $task := %s\n" +
-                            "return insert node $task into doc('TaskDatabase/Tasks.xml')/tasks",
+                            "return insert node $task into doc('equipsync_db/Tasks.xml')/tasks",
                     taskXml
             );
 
-            baseXService.openDatabase("TaskDatabase");
+            baseXService.openDatabase("equipsync_db");
             baseXService.executeXQuery(deleteXQuery);
             return baseXService.executeXQuery(insertXQuery);
         } catch (Exception e) {

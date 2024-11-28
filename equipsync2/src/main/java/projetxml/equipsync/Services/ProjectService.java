@@ -48,7 +48,7 @@ public class ProjectService {
                     projectXml
             );
 
-            baseXService.openDatabase("ProjectDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error inserting project: " + e.getMessage();
@@ -58,8 +58,8 @@ public class ProjectService {
     // Get all projects
     public String getAllProjects() {
         try {
-            String xQuery = "for $project in doc('ProjectDatabase/Projects.xml')/projects/project return $project";
-            baseXService.openDatabase("ProjectDatabase");
+            String xQuery = "for $project in doc('equipsync_db/Projects.xml')/projects/project return $project";
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching projects: " + e.getMessage();
@@ -70,11 +70,11 @@ public class ProjectService {
     public String getProjectById(int id) {
         try {
             String xQuery = String.format(
-                    "for $project in doc('ProjectDatabase/Projects.xml')/projects/project " +
+                    "for $project in doc('equipsync_db/Projects.xml')/projects/project " +
                             "where $project/projectId = '%d' return $project",
                     id
             );
-            baseXService.openDatabase("ProjectDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching project with ID " + id + ": " + e.getMessage();
@@ -85,10 +85,10 @@ public class ProjectService {
     public String deleteProjectById(int id) {
         try {
             String xQuery = String.format(
-                    "delete node doc('ProjectDatabase/Projects.xml')/projects/project[projectId = '%d']",
+                    "delete node doc('equipsync_db/Projects.xml')/projects/project[projectId = '%d']",
                     id
             );
-            baseXService.openDatabase("ProjectDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error deleting project with ID " + id + ": " + e.getMessage();
@@ -123,18 +123,18 @@ public class ProjectService {
 
             // Delete the existing project node
             String deleteXQuery = String.format(
-                    "delete node doc('ProjectDatabase/Projects.xml')/projects/project[projectId = '%d']",
+                    "delete node doc('equipsync_db/Projects.xml')/projects/project[projectId = '%d']",
                     project.getProjectId()
             );
 
             // Insert the updated project node
             String insertXQuery = String.format(
                     "let $project := %s\n" +
-                            "return insert node $project into doc('ProjectDatabase/Projects.xml')/projects",
+                            "return insert node $project into doc('equipsync_db/Projects.xml')/projects",
                     projectXml
             );
 
-            baseXService.openDatabase("ProjectDatabase");
+            baseXService.openDatabase("equipsync_db");
             baseXService.executeXQuery(deleteXQuery);
             return baseXService.executeXQuery(insertXQuery);
         } catch (Exception e) {

@@ -33,7 +33,7 @@ public class UserService {
                     "return insert node  $user into doc('UserDatabase/Users2.xml')/users",userXml);
 
             // Execute the query
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery)+xQuery;
         } catch (Exception e) {
             return "Error inserting user: " + e.getMessage();
@@ -44,7 +44,7 @@ public class UserService {
     public String getAllUsers() {
         try {
             // XQuery to retrieve all user nodes
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             String xQuery = "for $user in /users/user return $user";
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class UserService {
 
     public String getUserById(int id) {
         try {
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             String xQuery = String.format(
                     "for $user in /users/user where $user/id = '%s' return $user", id);
             return baseXService.executeXQuery(xQuery);
@@ -66,7 +66,7 @@ public class UserService {
 
     public String deleteUserById(int id) {
         try {
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             String xQuery = String.format(
                     "for $user in /users/user where $user/id = '%s' return delete node $user", id);
             return baseXService.executeXQuery(xQuery);
@@ -77,7 +77,7 @@ public class UserService {
 
     public String updateUser(User user) {
         try {
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             // Update specific fields while preserving the XML structure
             String xQuery = String.format(
                     "for $user in /users/user where $user/id = '%s' " +
@@ -97,7 +97,7 @@ public class UserService {
 
     public boolean userExists(int id) {
         try {
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             String xQuery = String.format(
                     "exists(/users/user[id = '%s'])", id);
             String result = baseXService.executeXQuery(xQuery);

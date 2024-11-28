@@ -114,7 +114,7 @@ public class EquipmentService {
 
             // Delete the existing node
             String deleteXQuery = String.format(
-                    "delete node doc('EquipmentDatabase/Equipment.xml')/equipments/equipment[equipmentId = '%d']",
+                    "delete node doc('equipsync_db/Equipment.xml')/equipments/equipment[equipmentId = '%d']",
                     equipment.getEquipmentId()
             );
 
@@ -125,7 +125,7 @@ public class EquipmentService {
                     equipmentXml
             );
 
-            baseXService.openDatabase("EquipmentDatabase");
+            baseXService.openDatabase("equipsync_db");
             baseXService.executeXQuery(deleteXQuery);
             return baseXService.executeXQuery(insertXQuery);
         } catch (Exception e) {

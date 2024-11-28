@@ -43,11 +43,11 @@ public class OperationManagerService {
             // XQuery to insert
             String xQuery = String.format(
                     "let $manager := %s\n" +
-                            "return insert node $manager into doc('UserDatabase/OperationsManagers.xml')/operationsManagers",
+                            "return insert node $manager into doc('equipsync_db/OperationsManagers.xml')/operationsManagers",
                     managerXml
             );
 
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error inserting operations manager: " + e.getMessage();
@@ -57,8 +57,8 @@ public class OperationManagerService {
     // Get all operations managers
     public String getAllOperationsManagers() {
         try {
-            String xQuery = "for $manager in doc('UserDatabase/OperationsManagers.xml')/operationsManagers/operationsManager return $manager";
-            baseXService.openDatabase("UserDatabase");
+            String xQuery = "for $manager in doc('equipsync_db/OperationsManagers.xml')/operationsManagers/operationsManager return $manager";
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching operations managers: " + e.getMessage();
@@ -69,11 +69,11 @@ public class OperationManagerService {
     public String getOperationsManagerById(int id) {
         try {
             String xQuery = String.format(
-                    "for $manager in doc('UserDatabase/OperationsManagers.xml')/operationsManagers/operationsManager " +
+                    "for $manager in doc('equipsync_db/OperationsManagers.xml')/operationsManagers/operationsManager " +
                             "where $manager/id = '%d' return $manager",
                     id
             );
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching operations manager with ID " + id + ": " + e.getMessage();
@@ -84,10 +84,10 @@ public class OperationManagerService {
     public String deleteOperationsManagerById(int id) {
         try {
             String xQuery = String.format(
-                    "delete node doc('UserDatabase/OperationsManagers.xml')/operationsManagers/operationsManager[id = '%d']",
+                    "delete node doc('equipsync_db/OperationsManagers.xml')/operationsManagers/operationsManager[id = '%d']",
                     id
             );
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error deleting operations manager with ID " + id + ": " + e.getMessage();
@@ -123,18 +123,18 @@ public class OperationManagerService {
 
             // Delete the existing node
             String deleteXQuery = String.format(
-                    "delete node doc('UserDatabase/OperationsManagers.xml')/operationsManagers/operationsManager[id = '%d']",
+                    "delete node doc('equipsync_db/OperationsManagers.xml')/operationsManagers/operationsManager[id = '%d']",
                     manager.getId()
             );
 
             // Insert the updated node
             String insertXQuery = String.format(
                     "let $manager := %s\n" +
-                            "return insert node $manager into doc('UserDatabase/OperationsManagers.xml')/operationsManagers",
+                            "return insert node $manager into doc('equipsync_db/OperationsManagers.xml')/operationsManagers",
                     managerXml
             );
 
-            baseXService.openDatabase("UserDatabase");
+            baseXService.openDatabase("equipsync_db");
             baseXService.executeXQuery(deleteXQuery);
             return baseXService.executeXQuery(insertXQuery);
         } catch (Exception e) {

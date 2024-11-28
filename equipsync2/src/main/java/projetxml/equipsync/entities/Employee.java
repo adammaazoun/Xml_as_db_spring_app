@@ -4,7 +4,7 @@ import org.springframework.scheduling.config.Task;
 
 import java.util.List;
 
-class Employee extends User {
+public class Employee extends User {
     private int[] equipment;
     private int[] tasks;
 
