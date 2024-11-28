@@ -28,19 +28,13 @@ public class UserService {
             );
 
             // Properly format the XQuery statement with curly braces for the XML
-            String xQuery = """
-                    let $user := <user>
-                                    <id>3</id>
-                                    <username>karim</username>
-                                    <email>jojo@example.com</email>
-                                    <role>bro</role>
-                                 </user>
-                    return
-                      insert node  $user into doc('UserDatabase/Users2.xml')/users""";
+            String xQuery =String.format(
+                    "let $user := %s\n" +
+                    "return insert node  $user into doc('UserDatabase/Users2.xml')/users",userXml);
 
             // Execute the query
             baseXService.openDatabase("UserDatabase");
-            return baseXService.executeXQuery(xQuery);
+            return baseXService.executeXQuery(xQuery)+xQuery;
         } catch (Exception e) {
             return "Error inserting user: " + e.getMessage();
         }
@@ -55,6 +49,61 @@ public class UserService {
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
             return "Error fetching users: " + e.getMessage();
+        }
+    }
+
+
+    public String getUserById(String id) {
+        try {
+            baseXService.openDatabase("UserDatabase");
+            String xQuery = String.format(
+                    "for $user in /users/user where $user/id = '%s' return $user", id);
+            return baseXService.executeXQuery(xQuery);
+        } catch (Exception e) {
+            return "Error fetching user by ID: " + e.getMessage();
+        }
+    }
+
+    public String deleteUserById(int id) {
+        try {
+            baseXService.openDatabase("UserDatabase");
+            String xQuery = String.format(
+                    "for $user in /users/user where $user/id = '%s' return delete node $user", id);
+            return baseXService.executeXQuery(xQuery);
+        } catch (Exception e) {
+            return "Error deleting user: " + e.getMessage();
+        }
+    }
+
+    public String updateUser(User user) {
+        try {
+            baseXService.openDatabase("UserDatabase");
+            // Update specific fields while preserving the XML structure
+            String xQuery = String.format(
+                    "for $user in /users/user where $user/id = '%s' " +
+                            "return (replace value of node $user/username with '%s', " +
+                            "replace value of node $user/email with '%s', " +
+                            "replace value of node $user/role with '%s')",
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+            return baseXService.executeXQuery(xQuery);
+        } catch (Exception e) {
+            return "Error updating user: " + e.getMessage();
+        }
+    }
+
+    public boolean userExists(int id) {
+        try {
+            baseXService.openDatabase("UserDatabase");
+            String xQuery = String.format(
+                    "exists(/users/user[id = '%s'])", id);
+            String result = baseXService.executeXQuery(xQuery);
+            return "true".equalsIgnoreCase(result.trim());
+        } catch (Exception e) {
+            return false;
         }
     }
 }

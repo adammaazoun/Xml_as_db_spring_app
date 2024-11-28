@@ -4,7 +4,7 @@ import org.springframework.scheduling.config.Task;
 
 import java.util.List;
 
-class OperationsManager extends User {
+public class OperationsManager extends User {
     private int[] projects;
 
     // Getters and Setters

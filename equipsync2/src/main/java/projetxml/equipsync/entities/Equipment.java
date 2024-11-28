@@ -5,6 +5,15 @@ public class Equipment {
     private String details;
     private String status;
     private int employeeId;
+    private String categorie;
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
 
     // Getters and Setters
     public int getEquipmentId() {
