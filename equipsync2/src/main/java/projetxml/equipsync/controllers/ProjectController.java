@@ -21,16 +21,16 @@ public class ProjectController {
 
     @GetMapping("/all")
     public String getAllProjects() {
-        return projectService.getAllProjects();
+        return projectService.getAllProjects().toString();
     }
 
     @GetMapping("/{id}")
-    public String getProjectById(@PathVariable int id) {
+    public String getProjectById(@PathVariable String id) {
         return projectService.getProjectById(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProjectById(@PathVariable int id) {
+    public String deleteProjectById(@PathVariable String id) {
         return projectService.deleteProjectById(id);
     }
 

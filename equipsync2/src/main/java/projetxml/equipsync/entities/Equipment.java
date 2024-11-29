@@ -1,29 +1,30 @@
 package projetxml.equipsync.entities;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.List;
+
+@XmlRootElement(name = "equipment")
+@XmlType(propOrder = {"equipmentId", "details", "status", "employeeId", "category", "tasks"})
 public class Equipment {
-    private int equipmentId;
+
+    private String equipmentId;
+    private String category;
     private String details;
     private String status;
-    private int employeeId;
-    private String categorie;
+    private String photo;
 
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
-    }
-
-    // Getters and Setters
-    public int getEquipmentId() {
+    @XmlElement(name = "equipmentId")
+    public String getEquipmentId() {
         return equipmentId;
     }
 
-    public void setEquipmentId(int equipmentId) {
+    public void setEquipmentId(String equipmentId) {
         this.equipmentId = equipmentId;
     }
 
+    @XmlElement(name = "details")
     public String getDetails() {
         return details;
     }
@@ -32,6 +33,7 @@ public class Equipment {
         this.details = details;
     }
 
+    @XmlElement(name = "status")
     public String getStatus() {
         return status;
     }
@@ -40,11 +42,16 @@ public class Equipment {
         this.status = status;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+
+
+    @XmlElement(name = "category")
+    public String getCategory() {
+        return category;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setCategory(String category) {
+        this.category = category;
     }
+
+
 }

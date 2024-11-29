@@ -1,32 +1,40 @@
 package projetxml.equipsync.entities;
 
-public class User {
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
-    private Long id;
+import java.util.List;
+
+@XmlRootElement(name = "user")
+@XmlType(propOrder = {
+        "userId", "username", "password", "email", "role", "skills", "projects", "tasks", "equipment"
+})
+public class User {
+    private String userId;
     private String username;
+    private String password;
     private String email;
     private String role;
+    private List<String> skills; // Represents multiple <skills> elements
 
-    // Default Constructor
+    // Getters and Setters
+
+
     public User() {
     }
 
-    // Parameterized Constructor
-    public User(String username, String email, String role) {
-        this.username = username;
-        this.email = email;
-        this.role = role;
+    @XmlElement(name = "userId")
+    public String getUserId() {
+        return userId;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @XmlElement(name = "username")
     public String getUsername() {
         return username;
     }
@@ -35,6 +43,16 @@ public class User {
         this.username = username;
     }
 
+    @XmlElement(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @XmlElement(name = "email")
     public String getEmail() {
         return email;
     }
@@ -43,6 +61,7 @@ public class User {
         this.email = email;
     }
 
+    @XmlElement(name = "role")
     public String getRole() {
         return role;
     }
@@ -51,14 +70,34 @@ public class User {
         this.role = role;
     }
 
-    // toString Method for Debugging
+    @XmlElementWrapper(name = "skills") // Wrapper for the <skills> tag
+    @XmlElement(name = "skill") // Each skill is represented as <skills>
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public User(String userId, String username, String password, String email, String role, List<String> skills) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.skills = skills;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", skills=" + skills +
                 '}';
     }
 }

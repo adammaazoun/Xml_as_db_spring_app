@@ -17,7 +17,7 @@ public class EquipmentController {
 
     @PostMapping("/add")
     public String addEquipment(@RequestBody Equipment equipment, @RequestParam String xsdSchema) {
-        return equipmentService.insertEquipment(equipment, xsdSchema);
+        return equipmentService.insertEquipment(equipment);
     }
 
     @GetMapping("/all")
@@ -26,18 +26,18 @@ public class EquipmentController {
     }
 
     @GetMapping("/{id}")
-    public String getEquipmentById(@PathVariable int id) {
+    public String getEquipmentById(@PathVariable String id) {
         return equipmentService.getEquipmentById(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEquipmentById(@PathVariable int id) {
+    public String deleteEquipmentById(@PathVariable String id) {
         return equipmentService.deleteEquipmentById(id);
     }
 
     @PutMapping("/update")
     public String updateEquipment(@RequestBody Equipment equipment, @RequestParam String xsdSchema) {
-        return equipmentService.updateEquipment(equipment, xsdSchema);
+        return equipmentService.updateEquipment(equipment);
     }
 }
 

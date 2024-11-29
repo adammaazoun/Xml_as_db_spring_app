@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:simpleType name="EquipmentID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Status">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="InUse"/>
+            <xs:enumeration value="Available"/>
+            <xs:enumeration value="InMaintenance"/>
+            <xs:enumeration value="OutOfService"/>
+        </xs:restriction>
+    </xs:simpleType>
+                <xs:element name="Equipment" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="equipmentId" type="EquipmentID" />
+                            <xs:element name="details" type="xs:string" />
+                            <xs:element name="status" type="Status" />
+
+                            <xs:element name="category" type="xs:string"/>
+
+
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+</xs:schema>

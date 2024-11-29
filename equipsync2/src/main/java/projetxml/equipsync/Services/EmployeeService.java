@@ -1,36 +1,38 @@
 package projetxml.equipsync.Services;
 
-
 import org.springframework.stereotype.Service;
+import projetxml.equipsync.Services.BaseXService;
 import projetxml.equipsync.entities.Employee;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import projetxml.equipsync.entities.Equipment;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
     private final BaseXService baseXService;
+    private final XmlService<Employee> xmlService;
 
+    // Constructor
     public EmployeeService(BaseXService baseXService) {
         this.baseXService = baseXService;
+        this.xmlService = new XmlService<>(Employee.class);
     }
 
-    public String addEmployee(Employee employee) {
-        try {
-            String employeeXml = String.format(
-                    "<employee>" +
-                            "<id>%s</id>" +
-                            "<username>%s</username>" +
-                            "<email>%s</email>" +
-                            "<role>%s</role>" +
-                            "<equipment>%s</equipment>" +
-                            "<tasks>%s</tasks>" +
-                            "</employee>",
-                    employee.getId() != null ? employee.getId() : "",
-                    employee.getUsername(),
-                    employee.getEmail(),
-                    employee.getRole(),
-                    formatArray(employee.getEquipment()),
-                    formatArray(employee.getTasks())
-            );
 
+
+    // Insert Employee
+    public String insertEmployee(Employee employee) {
+        try {
+            // Serialize Employee to XML string
+            String employeeXml = xmlService.serialize(employee);
+            xmlService.validate(employeeXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
+
+            // XQuery to insert
             String xQuery = String.format(
                     "let $employee := %s\n" +
                             "return insert node $employee into doc('equipsync_db/Employees.xml')/employees",
@@ -40,10 +42,34 @@ public class EmployeeService {
             baseXService.openDatabase("equipsync_db");
             return baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
-            return "Error adding employee: " + e.getMessage();
+            return "Error inserting employee: " + e.getMessage();
         }
     }
 
+    // Get all employees
+    public List<Employee> getAllEmployees() {
+        try {
+            baseXService.openDatabase("equipsync_db");
+
+            // XQuery to retrieve all user nodes as XML
+            String xQuery = "for $user in /users/user return $user";
+            String result = baseXService.executeXQuery(xQuery);
+
+            // Split result into individual user XML strings and deserialize
+            List<Employee> employees = new ArrayList<>();
+            for (String userXml : result.split("(?=<user>)")) {
+                if (!userXml.trim().isEmpty()) {
+                    employees.add(xmlService.deserialize(userXml));
+                }
+            }
+            return employees;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    // Get employee by ID
     public String getEmployeeById(int id) {
         try {
             String xQuery = String.format(
@@ -58,10 +84,11 @@ public class EmployeeService {
         }
     }
 
-    public String deleteEmployeeById(int id) {
+    // Delete employee by ID
+    public String deleteEmployeeById(String id) {
         try {
             String xQuery = String.format(
-                    "delete node doc('equipsync_db/Employees.xml')/employees/employee[id = '%d']",
+                    "delete node doc('equipsync_db/Employees.xml')/employees/employee[id = '%s']",
                     id
             );
             baseXService.openDatabase("equipsync_db");
@@ -71,25 +98,30 @@ public class EmployeeService {
         }
     }
 
-    public String getAllEmployees() {
+    // Update Employee
+    public String updateEmployee(Employee employee) {
         try {
-            String xQuery = "for $employee in doc('equipsync_db/Employees.xml')/employees/employee return $employee";
-            baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
-        } catch (Exception e) {
-            return "Error fetching all employees: " + e.getMessage();
-        }
-    }
+            // Serialize Employee to XML string
+            String employeeXml = xmlService.serialize(employee);
 
-    private String formatArray(int[] array) {
-        if (array == null || array.length == 0) {
-            return "";
+            // Delete the existing node
+            String deleteXQuery = String.format(
+                    "delete node doc('equipsync_db/Employees.xml')/employees/employee[id = '%s']",
+                    employee.getUserId()
+            );
+
+            // Insert the updated node
+            String insertXQuery = String.format(
+                    "let $employee := %s\n" +
+                            "return insert node $employee into doc('equipsync_db/Employees.xml')/employees",
+                    employeeXml
+            );
+
+            baseXService.openDatabase("equipsync_db");
+            baseXService.executeXQuery(deleteXQuery);
+            return baseXService.executeXQuery(insertXQuery);
+        } catch (Exception e) {
+            return "Error updating employee with ID " + employee.getUserId() + ": " + e.getMessage();
         }
-        StringBuilder formattedArray = new StringBuilder();
-        for (int value : array) {
-            formattedArray.append("<value>").append(value).append("</value>");
-        }
-        return formattedArray.toString();
     }
 }
-

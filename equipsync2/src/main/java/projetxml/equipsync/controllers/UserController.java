@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/all")
     public String getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUsers().toString();
     }
 
     @PostMapping("/update")
@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping ("/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable String id) {
         return userService.deleteUserById(id);
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable int id) {
+    public User getUser(@PathVariable String id) {
         return userService.getUserById(id);
     }
 }

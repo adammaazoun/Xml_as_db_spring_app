@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:simpleType name="ProjectID">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="P+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TaskID">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="T+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Tasks">
+        <xs:sequence>
+            <xs:element name="task" type="TaskID" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="UID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{8}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="photoType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".*.(jpg|jpeg|png|gif|bmp)"/>
+        </xs:restriction>
+    </xs:simpleType>
+            <xs:element name="Project" >
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="projectId" type="ProjectID" />
+                        <xs:element name="operationManagerId" type="UID" />
+                        <xs:element name="tasks" type="Tasks" />
+                        <xs:element name="started" type="xs:date" />
+                        <xs:element name="dead-line" type="xs:date" />
+                        <xs:element name="description" type="xs:string" />
+                        <xs:element name="photo" type="photoType" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+</xs:schema>

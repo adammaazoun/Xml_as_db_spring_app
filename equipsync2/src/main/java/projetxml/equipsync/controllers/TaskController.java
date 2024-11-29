@@ -22,16 +22,16 @@ public class TaskController {
 
     @GetMapping("/all")
     public String getAllTasks() {
-        return taskService.getAllTasks();
+        return taskService.getAllTasks().toString();
     }
 
     @GetMapping("/{id}")
-    public String getTaskById(@PathVariable int id) {
+    public String getTaskById(@PathVariable String id) {
         return taskService.getTaskById(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTaskById(@PathVariable int id) {
+    public String deleteTaskById(@PathVariable String id) {
         return taskService.deleteTaskById(id);
     }
 

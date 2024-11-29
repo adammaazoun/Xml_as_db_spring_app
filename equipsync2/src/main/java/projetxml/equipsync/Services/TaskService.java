@@ -1,33 +1,30 @@
 package projetxml.equipsync.Services;
 
-
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 import org.springframework.stereotype.Service;
 import projetxml.equipsync.entities.Task;
+import projetxml.equipsync.entities.User;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TaskService {
     private final BaseXService baseXService;
+    private final XmlService<Task> xmlService;
 
     public TaskService(BaseXService baseXService) {
         this.baseXService = baseXService;
+        this.xmlService = new XmlService<>(Task.class);
     }
 
     // Insert Task
     public String insertTask(Task task) {
         try {
-            // Build XML for the task
-            String taskXml = String.format(
-                    "<task>" +
-                            "<taskId>%d</taskId>" +
-                            "<equipmentId>%d</equipmentId>" +
-                            "<projectId>%d</projectId>" +
-                            "<description>%s</description>" +
-                            "</task>",
-                    task.getTaskId(),
-                    task.getEquipmentId(),
-                    task.getProjectId(),
-                    task.getDescription()
-            );
+            String taskXml = xmlService.serialize(task);
+            xmlService.validate(taskXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\task.xsd");
 
             // XQuery to insert the task
             String xQuery = String.format(
@@ -44,22 +41,35 @@ public class TaskService {
     }
 
     // Get All Tasks
-    public String getAllTasks() {
+    public List<Task> getAllTasks() {
+
         try {
-            String xQuery = "for $task in doc('equipsync_db/Tasks.xml')/tasks/task return $task";
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+
+            // XQuery to retrieve all user nodes as XML
+            String xQuery = "for $task in /tasks/task return $task";
+            String result = baseXService.executeXQuery(xQuery);
+
+            // Split result into individual user XML strings and deserialize
+            List<Task> tasks = new ArrayList<>();
+            for (String userXml : result.split("(?=<task>)")) {
+                if (!userXml.trim().isEmpty()) {
+                    tasks.add(xmlService.deserialize(userXml));
+                }
+            }
+            return tasks;
         } catch (Exception e) {
-            return "Error fetching tasks: " + e.getMessage();
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
     // Get Task by ID
-    public String getTaskById(int id) {
+    public String getTaskById(String id) {
         try {
             String xQuery = String.format(
                     "for $task in doc('equipsync_db/Tasks.xml')/tasks/task " +
-                            "where $task/taskId = '%d' return $task",
+                            "where $task/taskId = '%s' return $task",
                     id
             );
             baseXService.openDatabase("equipsync_db");
@@ -70,10 +80,10 @@ public class TaskService {
     }
 
     // Delete Task by ID
-    public String deleteTaskById(int id) {
+    public String deleteTaskById(String id) {
         try {
             String xQuery = String.format(
-                    "delete node doc('TaskDatabase/Tasks.xml')/tasks/task[taskId = '%d']",
+                    "delete node doc('equipsync_db/Tasks.xml')/tasks/task[taskId = '%s']",
                     id
             );
             baseXService.openDatabase("equipsync_db");
@@ -86,23 +96,11 @@ public class TaskService {
     // Update Task
     public String updateTask(Task task) {
         try {
-            // Build XML for the updated task
-            String taskXml = String.format(
-                    "<task>" +
-                            "<taskId>%d</taskId>" +
-                            "<equipmentId>%d</equipmentId>" +
-                            "<projectId>%d</projectId>" +
-                            "<description>%s</description>" +
-                            "</task>",
-                    task.getTaskId(),
-                    task.getEquipmentId(),
-                    task.getProjectId(),
-                    task.getDescription()
-            );
+            String taskXml = xmlService.serialize(task);
 
             // Delete the existing task node
             String deleteXQuery = String.format(
-                    "delete node doc('equipsync_db/Tasks.xml')/tasks/task[taskId = '%d']",
+                    "delete node doc('equipsync_db/Tasks.xml')/tasks/task[taskId = '%s']",
                     task.getTaskId()
             );
 
@@ -121,4 +119,3 @@ public class TaskService {
         }
     }
 }
-

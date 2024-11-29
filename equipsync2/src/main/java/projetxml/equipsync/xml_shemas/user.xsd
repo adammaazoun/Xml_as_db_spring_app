@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:simpleType name="UID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{8}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Email">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Role">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Admin"/>
+            <xs:enumeration value="Employee"/>
+            <xs:enumeration value="HR"/>
+            <xs:enumeration value="OperationManager"/>
+            <xs:enumeration value="EquipmentManager"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="Skills">
+        <xs:sequence>
+            <xs:element name="skills" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="ProjectID">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="P+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Tasks">
+        <xs:sequence>
+            <xs:element name="task" type="TaskID" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Projects">
+        <xs:sequence>
+            <xs:element name="task" type="ProjectID" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="TaskID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="T+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EquipmentID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="user">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userId" type="UID" />
+                <xs:element name="username" type="xs:string" />
+                <xs:element name="password" type="xs:string" />
+                <xs:element name="email" type="Email" />
+                <xs:element name="role" type="Role" />
+                <xs:element name="skills" type="Skills"/>
+                <xs:element name="projets" type="Projects" minOccurs="0"/>
+                <xs:element name="tasks" type="Tasks" minOccurs="0"/>
+                <xs:element name="equipment" type="EquipmentID" minOccurs="0"/>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

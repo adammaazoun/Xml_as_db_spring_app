@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:simpleType name="TaskID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="T+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ProjectID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="P+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EquipmentID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+            <xs:element name="Task" >
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="taskId" type="TaskID" />
+                        <xs:element name="projectId" type="ProjectID" />
+                        <xs:element name="equipmentId" type="EquipmentID"/>
+                        <xs:element name="description" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+</xs:schema>

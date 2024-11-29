@@ -1,32 +1,24 @@
 package projetxml.equipsync.entities;
 
-public class Role {
-    private int roleId;
-    private int userId;
-    private int[] permissionIds;
+import java.util.List;
 
-    public int[] getPermissionIds() {
+public class Role {
+    private String rolename;
+    private List<String> permissionIds;
+
+    public String getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
+    }
+
+    public List<String> getPermissionIds() {
         return permissionIds;
     }
 
-    // Getters and Setters
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    public void setPermissionIds(int[] permissionIds) {
+    public void setPermissionIds(List<String> permissionIds) {
         this.permissionIds = permissionIds;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }
