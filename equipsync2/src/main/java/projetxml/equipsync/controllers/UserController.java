@@ -19,7 +19,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/insert")
+    @PostMapping("/hr/insert")
     public ResponseEntity<String> insertUser(@RequestBody User user) {
         // Assuming userService.insertUser() returns a message or status
         try {
@@ -29,17 +29,17 @@ public class UserController {
             return ResponseEntity.status(500).body("Error inserting user: " + e.getMessage());  // Return error response
         }
     }
-    @GetMapping("/all")
+    @GetMapping("/hr/all")
     public String getAllUsers() {
         return userService.getAllUsers().toString();
     }
 
-    @PostMapping("/update")
+    @PostMapping("/hr/update")
     public String updatetUser(@RequestBody User user) {
         return userService.updateUser(user) ;
     }
 
-    @DeleteMapping  ("/{id}")
+    @DeleteMapping  ("/hr/{id}")
     public String deleteUser(@PathVariable String id) {
         return userService.deleteUserById(id);
     }

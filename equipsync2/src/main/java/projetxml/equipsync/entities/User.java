@@ -135,7 +135,7 @@ public class User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(this.getRole())
                 .stream()
-                .map(role -> (GrantedAuthority) () -> "ROLE_" + role)
+                .map(role -> (GrantedAuthority) () ->  role)
                 .collect(Collectors.toList());
     }
 }

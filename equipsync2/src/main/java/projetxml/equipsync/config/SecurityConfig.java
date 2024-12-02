@@ -38,10 +38,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/login","/api/refreshToken", "/api/users/insert","/**").permitAll()
-//                        .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-//                        .requestMatchers("/api/v1/user/**").hasAnyAuthority("USER","ADMIN")
-//                        .anyRequest().hasAuthority("ADMIN")
+                        .requestMatchers("/api/login","/api/refreshToken").permitAll()
+                        .requestMatchers("/api/users/hr/**").hasAnyAuthority("ADMIN","HR")
+                        .requestMatchers("/api/users/user/**").hasAnyAuthority("ADMIN","HR","EMPLOYEE")
+
+                        .requestMatchers("/api/user/me/**").hasAnyAuthority("EMPLOYEE","ADMIN","EM","OM")
+                        .requestMatchers("/api/equipments/**").hasAnyAuthority("EM","ADMIN")
+                        .requestMatchers("/api/projects/**").hasAnyAuthority("OM","ADMIN")
+
+                        .anyRequest().hasAuthority("ADMIN")
                 )
                 .httpBasic(withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
