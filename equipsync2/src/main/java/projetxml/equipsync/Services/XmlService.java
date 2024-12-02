@@ -29,7 +29,7 @@ public class XmlService<T> {
         JAXBContext context = JAXBContext.newInstance(type);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
         StringWriter writer = new StringWriter();
         marshaller.marshal(object, writer);
         return writer.toString();

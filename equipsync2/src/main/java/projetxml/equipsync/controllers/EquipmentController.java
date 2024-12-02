@@ -37,7 +37,7 @@ public class EquipmentController {
 
     @PutMapping("/update")
     public String updateEquipment(@RequestBody Equipment equipment, @RequestParam String xsdSchema) {
-        return equipmentService.updateEquipment(equipment);
+        return equipmentService.updateEquipment(equipment).toString();
     }
 }
 

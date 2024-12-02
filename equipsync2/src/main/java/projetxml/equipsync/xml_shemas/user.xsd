@@ -62,6 +62,8 @@
                 <xs:element name="email" type="Email" />
                 <xs:element name="role" type="Role" />
                 <xs:element name="skills" type="Skills"/>
+                <xs:element name="RefreshToken" type="xs:string"/>
+                <xs:element name="RefreshToken_expiryDate" type="xs:string"/>
                 <xs:element name="projets" type="Projects" minOccurs="0"/>
                 <xs:element name="tasks" type="Tasks" minOccurs="0"/>
                 <xs:element name="equipment" type="EquipmentID" minOccurs="0"/>

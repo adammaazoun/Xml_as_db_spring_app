@@ -4,27 +4,48 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import projetxml.equipsync.security.InstantAdapter;
 
+import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name = "user")
 @XmlType(propOrder = {
-        "userId", "username", "password", "email", "role", "skills", "projects", "tasks", "equipment"
+        "userId", "username", "password", "email", "role",
+         "refreshToken", "refreshToken_expiryDate","skills"
 })
 public class User {
+
     private String userId;
     private String username;
     private String password;
     private String email;
     private String role;
-    private List<String> skills; // Represents multiple <skills> elements
+    private String refreshToken;
+    private Instant refreshToken_expiryDate;
+    private List<String> skills;
 
-    // Getters and Setters
+    public User() {}
 
+    public User(String userId, String username, String password, String email,
+                String role, String refreshToken,
+                Instant refreshToken_expiryDate, List<String> skills) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.refreshToken = refreshToken;
+        this.refreshToken_expiryDate = refreshToken_expiryDate;
+        this.skills = skills;
 
-    public User() {
     }
 
+    // Ensure all getters have XmlElement annotations
     @XmlElement(name = "userId")
     public String getUserId() {
         return userId;
@@ -69,9 +90,28 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+    @XmlElement(name = "refreshToken")
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-    @XmlElementWrapper(name = "skills") // Wrapper for the <skills> tag
-    @XmlElement(name = "skill") // Each skill is represented as <skills>
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    @XmlElement(name = "refreshToken_expiryDate")
+    @XmlJavaTypeAdapter(InstantAdapter.class)
+    public Instant getRefreshToken_expiryDate() {
+        return refreshToken_expiryDate;
+    }
+
+    public void setRefreshToken_expiryDate(Instant refreshToken_expiryDate) {
+        this.refreshToken_expiryDate = refreshToken_expiryDate;
+    }
+
+
+
+    @XmlElementWrapper(name = "skills")
+    @XmlElement(name = "skill")
     public List<String> getSkills() {
         return skills;
     }
@@ -80,24 +120,22 @@ public class User {
         this.skills = skills;
     }
 
-    public User(String userId, String username, String password, String email, String role, List<String> skills) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.skills = skills;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", skills=" + skills +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", refreshToken_expiryDate=" + refreshToken_expiryDate +
                 '}';
+    }
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(this.getRole())
+                .stream()
+                .map(role -> (GrantedAuthority) () -> "ROLE_" + role)
+                .collect(Collectors.toList());
     }
 }

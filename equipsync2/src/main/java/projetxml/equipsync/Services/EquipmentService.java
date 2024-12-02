@@ -1,5 +1,6 @@
 package projetxml.equipsync.Services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import projetxml.equipsync.entities.Equipment;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 public class EquipmentService {
-
+    @Autowired
     private final BaseXService baseXService;
     private final XmlService<Equipment> xmlService;
 

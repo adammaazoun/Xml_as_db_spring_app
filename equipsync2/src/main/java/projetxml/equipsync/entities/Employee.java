@@ -5,16 +5,17 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
+import java.time.Instant;
 import java.util.List;
 
 @XmlRootElement
-@XmlType(propOrder = {"userId", "username", "password", "email", "role", "equipment", "tasks"})
+@XmlType(propOrder = {"userId", "username", "password", "email", "role", "equipment", "tasks","refreshToken", "refreshToken_expiryDate"})
 public class Employee extends User {
     private String equipmentId;
     private List<String> tasksIds;
 
-    public Employee(String userId, String username, String password, String email, String role, List<String> skills) {
-        super(userId, username, password, email, role, skills);
+    public Employee(String userId, String username, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills) {
+        super(userId, username, password, email, role,refreshToken,refreshToken_expiryDate, skills);
     }
 
     @XmlElement

@@ -1,11 +1,16 @@
 package projetxml.equipsync.controllers;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import projetxml.equipsync.Services.UserService;
 import projetxml.equipsync.entities.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -13,11 +18,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/insert")
-    public String insertUser(@RequestBody User user) {
-        return userService.insertUser(user);
-    }
 
+    @PostMapping("/insert")
+    public ResponseEntity<String> insertUser(@RequestBody User user) {
+        // Assuming userService.insertUser() returns a message or status
+        try {
+            String response = userService.insertUser(user);
+            return ResponseEntity.ok(response);  // Return 200 OK with response
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error inserting user: " + e.getMessage());  // Return error response
+        }
+    }
     @GetMapping("/all")
     public String getAllUsers() {
         return userService.getAllUsers().toString();
@@ -28,7 +39,7 @@ public class UserController {
         return userService.updateUser(user) ;
     }
 
-    @GetMapping ("/delete/{id}")
+    @DeleteMapping  ("/{id}")
     public String deleteUser(@PathVariable String id) {
         return userService.deleteUserById(id);
     }
