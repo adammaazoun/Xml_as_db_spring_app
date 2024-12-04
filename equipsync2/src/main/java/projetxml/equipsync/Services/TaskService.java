@@ -61,7 +61,7 @@ public class TaskService {
     }
 
     // Get Task by ID
-    public String getTaskById(String id) {
+    public Task getTaskById(String id) {
         try {
             String xQuery = String.format(
                     "for $task in doc('equipsync_db/Tasks.xml')/tasks/task " +
@@ -69,9 +69,16 @@ public class TaskService {
                     id
             );
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            String result = baseXService.executeXQuery(xQuery);
+
+            if (result.trim().isEmpty()) {
+                return null; // User not found
+            }
+
+            // Deserialize and return the user
+            return xmlService.deserialize(result.trim());
         } catch (Exception e) {
-            return "Error fetching task with ID " + id + ": " + e.getMessage();
+            return null;
         }
     }
 

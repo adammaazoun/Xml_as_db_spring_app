@@ -6,30 +6,34 @@ import java.util.List;
 
 // Marking the class as an XML root element
 @XmlRootElement(name = "Project")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Project {
+@XmlType(propOrder = {
+        "projectId", "projectName","operationManagerId","tasks", "started", "deadline", "description","photo"
+})public class Project {
 
 
     private String projectId;
-
+    private String projectName;
     private String operationManagerId;
-
-
     private List<String> tasks;
-
     private Date started;
-
-
     private Date deadline;
-
-
     private String description;
-
-
     private String photo;
 
     // Default constructor required for JAXB
     public Project() {}
+
+    public Project(String projectId, String projectName, String operationManagerId, List<String> tasks, Date started, Date deadline, String description, String photo) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.operationManagerId = operationManagerId;
+        this.tasks = tasks;
+        this.started = started;
+        this.deadline = deadline;
+        this.description = description;
+        this.photo = photo;
+    }
+
     @XmlElement(name = "projectId")
     // Getters and setters
     public String getProjectId() {
@@ -86,16 +90,23 @@ public class Project {
     public String getPhoto() {
         return photo;
     }
-
-
-
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+    @XmlElement(name = "projectName")
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
                 "projectId='" + projectId + '\'' +
+                ", projectName='" + projectName + '\'' +
                 ", operationManagerId='" + operationManagerId + '\'' +
                 ", tasks=" + tasks +
                 ", started=" + started +

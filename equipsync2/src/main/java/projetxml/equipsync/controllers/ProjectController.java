@@ -19,9 +19,9 @@ public class ProjectController {
         return projectService.insertProject(project);
     }
 
-    @GetMapping("/all")
-    public String getAllProjects() {
-        return projectService.getAllProjects().toString();
+    @GetMapping("/all/{managerId}")
+    public String getAllProjects(String managerId) {
+        return projectService.getAllProjectsByManger(managerId).toString();
     }
 
     @GetMapping("/{id}")

@@ -69,7 +69,7 @@ public class OperationManagerService {
     }
 
     // Get operations manager by ID
-    public String getOperationsManagerById(String id) {
+    public OperationsManager getOperationsManagerById(String id) {
         try {
             String xQuery = String.format(
                     "for $manager in doc('equipsync_db/OperationsManagers.xml')/operationsManagers/operationsManager " +
@@ -77,9 +77,16 @@ public class OperationManagerService {
                     id
             );
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            String result = baseXService.executeXQuery(xQuery);
+
+            if (result.trim().isEmpty()) {
+                return null; // User not found
+            }
+
+            // Deserialize and return the user
+            return xmlService.deserialize(result.trim());
         } catch (Exception e) {
-            return "Error fetching operations manager with ID " + id + ": " + e.getMessage();
+            return null;
         }
     }
 

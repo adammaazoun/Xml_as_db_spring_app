@@ -124,4 +124,26 @@ public class ProjectService {
             return "Error updating project with ID " + project.getProjectId() + ": " + e.getMessage();
         }
     }
+
+    public List<Project> getAllProjectsByManger(String managerId) {
+        try {
+            baseXService.openDatabase("equipsync_db");
+
+            // XQuery to retrieve all user nodes as XML
+            String xQuery = "for $project in /projects/project return $project";
+            String result = baseXService.executeXQuery(xQuery);
+
+            // Split result into individual user XML strings and deserialize
+            List<Project> projects = new ArrayList<>();
+            for (String userXml : result.split("(?=<project>)")) {
+                if (!userXml.trim().isEmpty()) {
+                    projects.add(xmlService.deserialize(userXml));
+                }
+            }
+            return projects;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 }

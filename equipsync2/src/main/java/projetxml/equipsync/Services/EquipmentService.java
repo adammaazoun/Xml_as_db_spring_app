@@ -3,6 +3,7 @@ package projetxml.equipsync.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import projetxml.equipsync.entities.Equipment;
 import org.springframework.stereotype.Service;
+import projetxml.equipsync.entities.User;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -44,7 +45,7 @@ public class EquipmentService {
 
     // Serialize Equipment to XML using JAXB
 
-    public List<Equipment> updateEquipment(Equipment updatedEquipment) {
+    public String updateEquipment(Equipment updatedEquipment) {
         try {
             baseXService.openDatabase("equipsync_db");
 
@@ -52,22 +53,16 @@ public class EquipmentService {
             String xQuery = "for $task in /equipments/equipment return $equipment";
             String result = baseXService.executeXQuery(xQuery);
 
-            // Split result into individual user XML strings and deserialize
-            List<Equipment> equipments = new ArrayList<>();
-            for (String userXml : result.split("(?=<equipment>)")) {
-                if (!userXml.trim().isEmpty()) {
-                    equipments.add(xmlService.deserialize(userXml));
-                }
-            }
-            return equipments;
+
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return new ArrayList<>();
+            return null;
         }
     }
 
     // Get equipment by equipmentId
-    public String getEquipmentById(String equipmentId) {
+    public Equipment getEquipmentById(String equipmentId) {
         try {
             String xQuery = String.format(
                     "for $equipment in doc('equipsync_db/Equipment.xml')/equipment " +
@@ -75,9 +70,18 @@ public class EquipmentService {
                     equipmentId
             );
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            String result = baseXService.executeXQuery(xQuery);
+
+            if (result.trim().isEmpty()) {
+                return null; // User not found
+            }
+
+            // Deserialize and return the user
+            return xmlService.deserialize(result.trim());
+
+
         } catch (Exception e) {
-            return "Error fetching equipment with ID " + equipmentId + ": " + e.getMessage();
+            return null;
         }
     }
 
@@ -96,13 +100,23 @@ public class EquipmentService {
     }
 
     // Get all equipment
-    public String getAllEquipment() {
+    public List<Equipment> getAllEquipment() {
         try {
             String xQuery = "for $equipment in doc('equipsync_db/Equipment.xml')/equipment return $equipment";
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            String result = baseXService.executeXQuery(xQuery);
+
+
+            List<Equipment> users = new ArrayList<>();
+            for (String userXml : result.split("(?=<equipment>)")) {
+                if (!userXml.trim().isEmpty()) {
+                    users.add(xmlService.deserialize(userXml));
+                }
+            }
+            return users;
         } catch (Exception e) {
-            return "Error fetching all equipment: " + e.getMessage();
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

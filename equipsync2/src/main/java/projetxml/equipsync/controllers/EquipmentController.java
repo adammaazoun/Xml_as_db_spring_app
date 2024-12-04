@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 import projetxml.equipsync.Services.EquipmentService;
 import projetxml.equipsync.entities.Equipment;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/equipment")
@@ -21,12 +23,12 @@ public class EquipmentController {
     }
 
     @GetMapping("/all")
-    public String getAllEquipment() {
+    public List<Equipment> getAllEquipment() {
         return equipmentService.getAllEquipment();
     }
 
     @GetMapping("/{id}")
-    public String getEquipmentById(@PathVariable String id) {
+    public Equipment getEquipmentById(@PathVariable String id) {
         return equipmentService.getEquipmentById(id);
     }
 
