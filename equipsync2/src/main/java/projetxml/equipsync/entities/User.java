@@ -15,13 +15,15 @@ import java.util.stream.Collectors;
 
 @XmlRootElement(name = "user")
 @XmlType(propOrder = {
-        "userId", "username", "password", "email", "role",
+        "userId", "username","firstname","lastname", "password", "email", "role",
          "refreshToken", "refreshToken_expiryDate","skills"
 })
 public class User {
 
     private String userId;
     private String username;
+    private String firstname;
+    private String lastname;
     private String password;
     private String email;
     private String role;
@@ -29,20 +31,20 @@ public class User {
     private Instant refreshToken_expiryDate;
     private List<String> skills;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String userId, String username, String password, String email,
-                String role, String refreshToken,
-                Instant refreshToken_expiryDate, List<String> skills) {
+    public User(String userId, String username, String firstname, String lastname, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills) {
         this.userId = userId;
         this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.password = password;
         this.email = email;
         this.role = role;
         this.refreshToken = refreshToken;
         this.refreshToken_expiryDate = refreshToken_expiryDate;
         this.skills = skills;
-
     }
 
     // Ensure all getters have XmlElement annotations
@@ -107,8 +109,24 @@ public class User {
     public void setRefreshToken_expiryDate(Instant refreshToken_expiryDate) {
         this.refreshToken_expiryDate = refreshToken_expiryDate;
     }
+    @XmlElement(name = "firstname")
 
+    public String getFirstname() {
+        return firstname;
+    }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    @XmlElement(name = "lastname")
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
     @XmlElementWrapper(name = "skills")
     @XmlElement(name = "skill")
@@ -125,13 +143,17 @@ public class User {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
-                ", skills=" + skills +
                 ", refreshToken='" + refreshToken + '\'' +
                 ", refreshToken_expiryDate=" + refreshToken_expiryDate +
+                ", skills=" + skills +
                 '}';
     }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(this.getRole())
                 .stream()

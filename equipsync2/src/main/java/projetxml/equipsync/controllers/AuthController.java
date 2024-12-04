@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService service;
     private final JwtService jwtService;

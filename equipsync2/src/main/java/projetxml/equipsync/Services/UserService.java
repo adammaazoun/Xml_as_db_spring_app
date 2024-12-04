@@ -27,6 +27,8 @@ import static java.lang.Boolean.TRUE;
 
 @Service
 public class UserService {
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     private final BaseXService baseXService;
     private final XmlService<User> xmlService;
     @Value("${security.jwt.refresh-expiration-time}")
@@ -67,6 +69,8 @@ public class UserService {
 
     public String insertUser(User user) {
         String userXml = null;
+        user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
+
         try {
             userXml = xmlService.serialize(user);
 //            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
@@ -214,20 +218,7 @@ public class UserService {
         }
     }
 
-    public void hashAndSetPassword(User user) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-    }
 
-    public boolean isAdmin(String username) throws IOException {
-        String xQuery = String.format(
-                "for $user in /users/user " +
-                        "where $user/username = '%s' " +
-                        "return $user/role",
-                username
-        );
-        return "ADMIN".equalsIgnoreCase(baseXService.executeXQuery(xQuery).trim());
-    }
 
     public User createRefreshToken(String username) {
         User user = this.getUserByUsername(username);
@@ -260,7 +251,7 @@ public class UserService {
             return false;
         }
 
-        // Compare the plain text passwords
-        return user.getPassword().equals(authRequest.getPassword());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(authRequest.getPassword(), user.getPassword());
     }
 }

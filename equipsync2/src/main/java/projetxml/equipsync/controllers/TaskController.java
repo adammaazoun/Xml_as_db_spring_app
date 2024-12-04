@@ -20,9 +20,9 @@ public class TaskController {
         return taskService.insertTask(task);
     }
 
-    @GetMapping("/all")
-    public String getAllTasks() {
-        return taskService.getAllTasks().toString();
+    @GetMapping("/all/{projectId}")
+    public String getAllProjectTasks(String id) {
+        return taskService.getAllTasks(id).toString();
     }
 
     @GetMapping("/{id}")

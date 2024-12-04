@@ -13,8 +13,10 @@ import java.util.List;
 public class OperationsManager extends User {
 
     private List<String> projects;  // Directly use List<String> for projects
-    public OperationsManager(String userId, String username, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills) {
-        super(userId, username, password, email, role,refreshToken,refreshToken_expiryDate, skills);
+
+    public OperationsManager(String userId, String username, String firstname, String lastname, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills, List<String> projects) {
+        super(userId, username, firstname, lastname, password, email, role, refreshToken, refreshToken_expiryDate, skills);
+        this.projects = projects;
     }
 
     // Getter and Setter for 'projects'

@@ -14,8 +14,10 @@ public class Employee extends User {
     private String equipmentId;
     private List<String> tasksIds;
 
-    public Employee(String userId, String username, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills) {
-        super(userId, username, password, email, role,refreshToken,refreshToken_expiryDate, skills);
+    public Employee(String userId, String username, String firstname, String lastname, String password, String email, String role, String refreshToken, Instant refreshToken_expiryDate, List<String> skills, String equipmentId, List<String> tasksIds) {
+        super(userId, username, firstname, lastname, password, email, role, refreshToken, refreshToken_expiryDate, skills);
+        this.equipmentId = equipmentId;
+        this.tasksIds = tasksIds;
     }
 
     @XmlElement

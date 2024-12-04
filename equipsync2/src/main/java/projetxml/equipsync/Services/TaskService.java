@@ -1,12 +1,8 @@
 package projetxml.equipsync.Services;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
 import org.springframework.stereotype.Service;
 import projetxml.equipsync.entities.Task;
-import projetxml.equipsync.entities.User;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +37,13 @@ public class TaskService {
     }
 
     // Get All Tasks
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks(String id) {
 
         try {
             baseXService.openDatabase("equipsync_db");
 
             // XQuery to retrieve all user nodes as XML
-            String xQuery = "for $task in /tasks/task return $task";
+            String xQuery = "for $task in /tasks/task  return $task";
             String result = baseXService.executeXQuery(xQuery);
 
             // Split result into individual user XML strings and deserialize
