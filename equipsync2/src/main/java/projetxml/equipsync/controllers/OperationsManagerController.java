@@ -26,7 +26,7 @@ public class OperationsManagerController {
     }
 
     @GetMapping("/{id}")
-    public String getOperationsManagerById(@PathVariable String id) {
+    public OperationsManager getOperationsManagerById(@PathVariable String id) {
         return operationsManagerService.getOperationsManagerById(id);
     }
 

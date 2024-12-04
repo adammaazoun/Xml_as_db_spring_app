@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 import projetxml.equipsync.Services.TaskService;
 import projetxml.equipsync.entities.Task;
 
+import java.net.StandardSocketOptions;
+
 
 @RestController
 @RequestMapping("/tasks")
@@ -26,7 +28,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public String getTaskById(@PathVariable String id) {
+    public Task getTaskById(@PathVariable String id) {
         return taskService.getTaskById(id);
     }
 
