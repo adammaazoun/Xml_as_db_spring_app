@@ -18,12 +18,12 @@ import java.util.List;
     private Date started;
     private Date deadline;
     private String description;
-    private String photo;
+    private byte[] photo;
 
     // Default constructor required for JAXB
     public Project() {}
 
-    public Project(String projectId, String projectName, String operationManagerId, List<String> tasks, Date started, Date deadline, String description, String photo) {
+    public Project(String projectId, String projectName, String operationManagerId, List<String> tasks, Date started, Date deadline, String description, byte[] photo) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.operationManagerId = operationManagerId;
@@ -87,10 +87,10 @@ import java.util.List;
         this.description = description;
     }
     @XmlElement(name = "photo")
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
     @XmlElement(name = "projectName")

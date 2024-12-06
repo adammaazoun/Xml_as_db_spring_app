@@ -1,5 +1,6 @@
 package projetxml.equipsync.entities;
 
+import jakarta.persistence.Lob;
 import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
@@ -14,12 +15,12 @@ public class Equipment {
     private List<String> tasks;
     private String details;
     private String status;
-    private String photo;
+    private byte[] photo;
 
     public Equipment() {
     }
 
-    public Equipment(String equipmentId, String category, String employeeId, List<String> tasks, String details, String status, String photo) {
+    public Equipment(String equipmentId, String category, String employeeId, List<String> tasks, String details, String status, byte[] photo) {
         this.equipmentId = equipmentId;
         this.category = category;
         this.employeeId = employeeId;
@@ -49,11 +50,11 @@ public class Equipment {
     }
     @XmlElement(name = "photo")
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
