@@ -1,5 +1,6 @@
 package projetxml.equipsync.Services;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import projetxml.equipsync.entities.Equipment;
 import org.springframework.stereotype.Service;
@@ -25,22 +26,22 @@ public class EquipmentService {
     }
 
     // Add equipment to XML database
-    public String insertEquipment(Equipment equipment) {
+    public String insertEquipment(Equipment equipment) throws Exception{
+        String equipmentXml = "";
         try {
-            // Serialize Equipment to XML using JAXB
-            String equipmentXml = xmlService.serialize(equipment);
-            xmlService.validate(equipmentXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\equipment.xsd");
-
+            equipmentXml = xmlService.serialize(equipment);
+//            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
             String xQuery = String.format(
-                    "let $equipment := %s\n" +
-                            "return insert node $equipment into doc('equipsync_db/Equipment.xml')/equipment",
+                    "let $project := %s\n" +
+                            "return insert node $project into doc('equipsync_db/equipments.xml')/equipments",
                     equipmentXml
             );
 
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            return equipmentXml + baseXService.executeXQuery(xQuery);
+
         } catch (Exception e) {
-            return "Error adding equipment: " + e.getMessage();
+            return equipmentXml + "Error inserting equipment: " + e.getMessage();
         }
     }
 

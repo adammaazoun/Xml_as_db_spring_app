@@ -18,7 +18,7 @@ public class EquipmentController {
     }
 
     @PostMapping("/insert")
-    public String addEquipment(@RequestBody Equipment equipment, @RequestParam String xsdSchema) {
+    public String addEquipment(@RequestBody Equipment equipment) throws Exception {
         return equipmentService.insertEquipment(equipment);
     }
 
