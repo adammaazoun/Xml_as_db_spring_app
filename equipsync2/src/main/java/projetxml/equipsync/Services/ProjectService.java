@@ -1,5 +1,6 @@
 package projetxml.equipsync.Services;
 
+import org.basex.query.value.item.Str;
 import org.springframework.stereotype.Service;
 import projetxml.equipsync.entities.Project;
 import projetxml.equipsync.entities.Task;
@@ -25,24 +26,23 @@ public class ProjectService {
 
 
     // Insert Project
-    public String insertProject(Project project) {
+    public String insertProject(Project project) throws Exception {
+        String projectXml = "";
         try {
-            // Convert the project object to XML using JAXB
-            String projectXml = xmlService.serialize(project);
-            xmlService.validate(projectXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\project.xsd");
-
-            // XQuery to insert the project
+            projectXml = xmlService.serialize(project);
+//            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
             String xQuery = String.format(
                     "let $project := %s\n" +
-                            "return insert node $project into doc('ProjectDatabase/Projects.xml')/projects",
+                            "return insert node $project into doc('equipsync_db/Projects.xml')/projects",
                     projectXml
             );
 
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
-        } catch (Exception e) {
-            return "Error inserting project: " + e.getMessage();
-        }
+            return projectXml + baseXService.executeXQuery(xQuery);
+                
+            } catch (Exception e) {
+                return projectXml + "Error inserting task: " + e.getMessage();
+            }
     }
 
     // Get all projects
@@ -70,17 +70,17 @@ public class ProjectService {
     }
 
     // Get project by ID
-    public String getProjectById(String id) {
+    public Project getProjectById(String id) {
         try {
             String xQuery = String.format(
-                    "for $project in doc('equipsync_db/Projects.xml')/projects/project " +
-                            "where $project/projectId = '%s' return $project",
+                    "for $project in /projects/Project where $project/projectId = '%s' return $project",
+
                     id
             );
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            return xmlService.deserialize(baseXService.executeXQuery(xQuery));
         } catch (Exception e) {
-            return "Error fetching project with ID " + id + ": " + e.getMessage();
+            return null;
         }
     }
 

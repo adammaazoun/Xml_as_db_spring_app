@@ -15,7 +15,7 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public String addProject(@RequestBody Project project) {
+    public String addProject(@RequestBody Project project) throws Exception {
         return projectService.insertProject(project);
     }
 
@@ -24,8 +24,8 @@ public class ProjectController {
         return projectService.getAllProjectsByManger(managerId).toString();
     }
 
-    @GetMapping("/{id}")
-    public String getProjectById(@PathVariable String id) {
+    @GetMapping("project/{id}")
+    public Project getProjectById(@PathVariable String id) {
         return projectService.getProjectById(id);
     }
 

@@ -42,7 +42,7 @@ public class TaskController {
         return taskService.deleteTaskById(id);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updateTask(@RequestBody Task task) {
         return taskService.updateTask(task);
     }

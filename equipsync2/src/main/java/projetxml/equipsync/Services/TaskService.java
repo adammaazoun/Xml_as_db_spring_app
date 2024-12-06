@@ -22,11 +22,10 @@ public class TaskService {
 
     // Insert Task
     public String insertTask(Task task) {
+        String taskXml="";
         try {
-            String taskXml = xmlService.serialize(task);
-            xmlService.validate(taskXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\task.xsd");
-
-            // XQuery to insert the task
+            taskXml = xmlService.serialize(task);
+//            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\task.xsd");
             String xQuery = String.format(
                     "let $task := %s\n" +
                             "return insert node $task into doc('equipsync_db/Tasks.xml')/tasks",
@@ -34,9 +33,9 @@ public class TaskService {
             );
 
             baseXService.openDatabase("equipsync_db");
-            return baseXService.executeXQuery(xQuery);
+            return taskXml + baseXService.executeXQuery(xQuery);
         } catch (Exception e) {
-            return "Error inserting task: " + e.getMessage();
+            return taskXml + "Error inserting task: " + e.getMessage();
         }
     }
 
