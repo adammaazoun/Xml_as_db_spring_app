@@ -28,12 +28,14 @@ public class EquipmentService {
     // Add equipment to XML database
     public String insertEquipment(Equipment equipment) throws Exception{
         String equipmentXml = "";
+        equipmentXml = xmlService.serialize(equipment);
         try {
             equipmentXml = xmlService.serialize(equipment);
+
 //            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
             String xQuery = String.format(
-                    "let $project := %s\n" +
-                            "return insert node $project into doc('equipsync_db/equipments.xml')/equipments",
+                    "let $equipment := %s\n" +
+                            "return insert node $equipment into doc('equipsync_db/Equipments.xml')/equipments",
                     equipmentXml
             );
 
@@ -52,7 +54,7 @@ public class EquipmentService {
             baseXService.openDatabase("equipsync_db");
 
             // XQuery to retrieve all user nodes as XML
-            String xQuery = "for $task in /equipments/equipment return $equipment";
+            String xQuery = "for $equipment in /equipments/equipment return $equipment";
             String result = baseXService.executeXQuery(xQuery);
 
 
@@ -67,8 +69,7 @@ public class EquipmentService {
     public Equipment getEquipmentById(String equipmentId) {
         try {
             String xQuery = String.format(
-                    "for $equipment in doc('equipsync_db/Equipment.xml')/equipment " +
-                            "where $equipment/equipmentId = '%s' return $equipment",
+                    "for $equipment in /equipments/equipment where $equipment/equipmentId = '%s' return $equipment",
                     equipmentId
             );
             baseXService.openDatabase("equipsync_db");
@@ -104,7 +105,7 @@ public class EquipmentService {
     // Get all equipment
     public List<Equipment> getAllEquipment() {
         try {
-            String xQuery = "for $equipment in doc('equipsync_db/Equipment.xml')/equipment return $equipment";
+            String xQuery = "for $equipment in /equipments/equipment return $equipment";
             baseXService.openDatabase("equipsync_db");
             String result = baseXService.executeXQuery(xQuery);
 

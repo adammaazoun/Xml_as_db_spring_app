@@ -1,12 +1,11 @@
 package projetxml.equipsync.entities;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
 @XmlRootElement(name = "equipment")
-@XmlType(propOrder = {"equipmentId", "details", "status", "employeeId", "category", "tasks","photo"})
+@XmlType(propOrder = {
+        "equipmentId" , "category" , "employeeId" , "tasks", "details", "status","photo"})
 public class Equipment {
 
     private String equipmentId;
@@ -39,8 +38,8 @@ public class Equipment {
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
-    @XmlElement(name = "tasks")
-
+    @XmlElementWrapper(name = "tasks")
+    @XmlElement(name = "task")
     public List<String> getTasks() {
         return tasks;
     }
@@ -96,5 +95,16 @@ public class Equipment {
         this.category = category;
     }
 
-
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "equipmentId='" + equipmentId + '\'' +
+                ", category='" + category + '\'' +
+                ", employeeId='" + employeeId + '\'' +
+                ", tasks=" + tasks +
+                ", details='" + details + '\'' +
+                ", status='" + status + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
+    }
 }
