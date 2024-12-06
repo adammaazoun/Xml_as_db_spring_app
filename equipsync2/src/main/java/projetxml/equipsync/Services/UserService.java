@@ -200,6 +200,24 @@ public class UserService {
             return "Error updating user: " + e.getMessage();
         }
     }
+    public String updateToken(User user) {
+        try {
+            this.deleteUserById(user.getUserId());
+
+            String userXml = xmlService.serialize(user);
+//            xmlService.validate(userXml, "C:\\Users\\maazo\\Documents\\Xml_as_db_spring_app\\equipsync2\\src\\main\\java\\projetxml\\equipsync\\xml_shemas\\user.xsd");
+            String xQuery = String.format(
+                    "let $user := %s\n" +
+                            "return insert node $user into doc('equipsync_db/Users.xml')/users",
+                    userXml
+            );
+
+            baseXService.openDatabase("equipsync_db");
+            return userXml + baseXService.executeXQuery(xQuery);
+        } catch (Exception e) {
+            return "Error updating user: " + e.getMessage();
+        }
+    }
 
     public boolean userExists(String id) {
         try {
@@ -224,7 +242,7 @@ public class UserService {
         User user = this.getUserByUsername(username);
         user.setRefreshToken(UUID.randomUUID().toString());
         user.setRefreshToken_expiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
-        this.updateUser(user);
+        this.updateToken(user);
         return user;
     }
 
@@ -244,6 +262,10 @@ public class UserService {
 
     public boolean isAuthenticated(AuthRequest authRequest) {
         // Fetch the user by username
+        if (authRequest == null || authRequest.getUsername() == null || authRequest.getPassword() == null) {
+            throw new IllegalArgumentException("Username or password is missing");
+        }
+
         User user = this.getUserByUsername(authRequest.getUsername());
 
         if (user == null) {

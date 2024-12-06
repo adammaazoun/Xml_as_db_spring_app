@@ -5,6 +5,7 @@ import projetxml.equipsync.Services.TaskService;
 import projetxml.equipsync.entities.Task;
 
 import java.net.StandardSocketOptions;
+import java.util.List;
 
 
 @RestController
@@ -22,7 +23,7 @@ public class TaskController {
         return taskService.insertTask(task);
     }
 
-    @GetMapping("/all/{projectId}")
+    @GetMapping("/project/{projectId}")
     public String getAllProjectTasks(String id) {
         return taskService.getAllTasks(id).toString();
     }
@@ -30,6 +31,10 @@ public class TaskController {
     @GetMapping("/{id}")
     public Task getTaskById(@PathVariable String id) {
         return taskService.getTaskById(id);
+    }
+    @GetMapping("/user/{userId}")
+    public List<Task> getTaskbyUserId(@PathVariable String userId) throws Exception {
+        return taskService.getTasksByUserId(userId);
     }
 
     @DeleteMapping("/{id}")

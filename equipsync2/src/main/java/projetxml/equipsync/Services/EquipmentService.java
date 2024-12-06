@@ -8,6 +8,7 @@ import projetxml.equipsync.entities.User;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,4 +120,30 @@ public class EquipmentService {
             return new ArrayList<>();
         }
     }
+
+
+    public Equipment getEquipmentByUserId(String id) {
+        try {
+            String xQuery = String.format(
+                    "for $equipment in doc('equipsync_db/Equipment.xml')/equipment " +
+                            "where $equipment/userId = '%s' return $equipment",
+                    id
+            );
+            baseXService.openDatabase("equipsync_db");
+            String result = baseXService.executeXQuery(xQuery);
+
+            if (result.trim().isEmpty()) {
+                return null; // User not found
+            }
+
+            // Deserialize and return the user
+            return xmlService.deserialize(result.trim());
+
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package projetxml.equipsync.Services;
 
 import org.springframework.stereotype.Service;
+import projetxml.equipsync.entities.Equipment;
 import projetxml.equipsync.entities.Task;
 
 import java.util.ArrayList;
@@ -10,9 +11,12 @@ import java.util.List;
 public class TaskService {
     private final BaseXService baseXService;
     private final XmlService<Task> xmlService;
+    private final EquipmentService equipmentService;
 
-    public TaskService(BaseXService baseXService) {
+
+    public TaskService(BaseXService baseXService,  EquipmentService equipmentService) {
         this.baseXService = baseXService;
+        this.equipmentService = equipmentService;
         this.xmlService = new XmlService<>(Task.class);
     }
 
@@ -60,7 +64,40 @@ public class TaskService {
         }
     }
 
-    // Get Task by ID
+    public List<Task> getTasksByUserId(String id) throws Exception {
+        List<Task> taskList = new ArrayList<>();
+        Equipment equipment=equipmentService.getEquipmentByUserId(id);
+        return this.getTasksByEquipmentId(equipment.getEquipmentId());
+    }
+
+    private List<Task> getTasksByEquipmentId(String equipmentId) {
+        try {
+            baseXService.openDatabase("equipsync_db");
+
+            // XQuery to retrieve tasks filtered by equipmentId
+            String xQuery = String.format(
+                    "for $task in doc('equipsync_db/Tasks.xml')/tasks/task " +
+                            "where $task/equipmentId = '%s' return $task",
+                    equipmentId
+            );
+
+            String result = baseXService.executeXQuery(xQuery);
+
+            // Split result into individual task XML strings and deserialize
+            List<Task> tasks = new ArrayList<>();
+            for (String taskXml : result.split("(?=<task>)")) {
+                if (!taskXml.trim().isEmpty()) {
+                    tasks.add(xmlService.deserialize(taskXml.trim()));
+                }
+            }
+            return tasks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+
     public Task getTaskById(String id) {
         try {
             String xQuery = String.format(

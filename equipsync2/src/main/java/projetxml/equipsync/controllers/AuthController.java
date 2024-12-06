@@ -17,6 +17,7 @@ import projetxml.equipsync.security.AuthResponse;
 import projetxml.equipsync.security.TokenRefreshRequest;
 import projetxml.equipsync.security.TokenRefreshResponse;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,15 +38,32 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+
+        String log=new String();
+        if (!service.isAuthenticated(authRequest)) {
+            throw  new UsernameNotFoundException("Invalid username or password");
+        }
         if (service.isAuthenticated(authRequest)) {
+            // Generate a new access token
             String token = jwtService.generateToken(authRequest.getUsername());
             Date expiresIn = jwtService.extractExpiration(token);
 
-            User user = service.createRefreshToken(authRequest.getUsername());
-            AuthResponse authResponse = new AuthResponse(token,expiresIn , user.getRefreshToken());
+            // Retrieve the user
+            User user = service.getUserByUsername(authRequest.getUsername());
+            log= String.valueOf((user.getRefreshToken_expiryDate().compareTo(Instant.now()) > 0));
+            // Check if an existing refresh token is valid
+            if (user.getRefreshToken() != null && !user.getRefreshToken().isEmpty() && (user.getRefreshToken_expiryDate().compareTo(Instant.now()) > 0)) {
+                // Use the existing refresh token if it's still valid
+                AuthResponse authResponse = new AuthResponse(token, expiresIn, user.getRefreshToken());
+                return new ResponseEntity<>(authResponse, HttpStatus.OK);
+            }
+
+            // If no valid refresh token exists, generate a new one
+            user = service.createRefreshToken(authRequest.getUsername());
+            AuthResponse authResponse = new AuthResponse(token, expiresIn, user.getRefreshToken());
             return new ResponseEntity<>(authResponse, HttpStatus.OK);
         } else {
-            throw new UsernameNotFoundException("Invalid user request!");
+            throw new UsernameNotFoundException("Invalid user request!"+log);
         }
     }
 

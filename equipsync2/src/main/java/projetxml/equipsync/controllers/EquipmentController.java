@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/equipment")
+@RequestMapping("/equipments")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
@@ -17,7 +17,7 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/insert")
     public String addEquipment(@RequestBody Equipment equipment, @RequestParam String xsdSchema) {
         return equipmentService.insertEquipment(equipment);
     }
