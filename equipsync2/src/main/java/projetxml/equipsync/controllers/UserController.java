@@ -56,4 +56,12 @@ public class UserController {
     public User getUser(@PathVariable String id) {
         return userService.getUserById(id);
     }
+
+    @PostMapping("/notify-task")
+    public String notifyUser(@RequestParam String userId, @RequestParam String taskId) {
+        userService.sendTaskNotification(userId, taskId);
+        return "Task notification sent successfully!";
+    }
+
 }
+

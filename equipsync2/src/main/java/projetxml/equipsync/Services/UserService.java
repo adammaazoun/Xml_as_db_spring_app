@@ -5,6 +5,8 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import projetxml.equipsync.entities.User;
@@ -28,7 +30,7 @@ import static java.lang.Boolean.TRUE;
 @Service
 public class UserService {
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
+    private JavaMailSender mailSender;
     private final BaseXService baseXService;
     private final XmlService<User> xmlService;
     @Value("${security.jwt.refresh-expiration-time}")
@@ -275,5 +277,17 @@ public class UserService {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(authRequest.getPassword(), user.getPassword());
+    }
+
+    public void sendTaskNotification(String userId, String taskId) {
+        String subject = "New Task Assigned!";
+        String body = "Hi " + this.getUserById(userId).getUsername() + ",\n\nYou have been assigned a new task with ID: " + taskId + ".\n\nBest regards,\nYour operation Manager ";
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(this.getUserById(userId).getEmail());
+        message.setSubject(subject);
+        message.setText(body);
+        message.setFrom("amaz7692@gmail.com"); // Optional
+        mailSender.send(message);
     }
 }
