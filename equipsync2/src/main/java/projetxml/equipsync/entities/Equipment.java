@@ -59,7 +59,7 @@ public class Equipment {
         this.photo = photo;
     }
 
-    @XmlElement(name = "equipmentId")
+    @XmlAttribute(name = "equipmentId")
     public String getEquipmentId() {
         return equipmentId;
     }

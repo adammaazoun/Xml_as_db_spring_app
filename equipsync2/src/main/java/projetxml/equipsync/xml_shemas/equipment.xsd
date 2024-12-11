@@ -14,17 +14,30 @@
             <xs:enumeration value="OutOfService"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="TaskID">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="T+-+[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Tasks">
+        <xs:sequence>
+            <xs:element name="task" type="TaskID" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
                 <xs:element name="Equipment" >
+
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="equipmentId" type="EquipmentID" />
+                            <xs:element name="category" type="xs:string"/>
+                            <xs:element name="employeeId" type="xs:string"/>
+                            <xs:element name="tasks" type="Tasks"/>
                             <xs:element name="details" type="xs:string" />
                             <xs:element name="status" type="Status" />
-
-                            <xs:element name="category" type="xs:string"/>
-
+                            <xs:element name="photo" type="xs:string"/>
 
                         </xs:sequence>
+                        <xs:attribute name="equipmentId" type="EquipmentID" use="required"/>
+
                     </xs:complexType>
                 </xs:element>
 

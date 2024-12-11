@@ -28,7 +28,7 @@
             <xs:element name="Project" >
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="projectId" type="ProjectID" />
+                        <xs:element name="projectName" type="xs:string" />
                         <xs:element name="operationManagerId" type="UID" />
                         <xs:element name="tasks" type="Tasks" />
                         <xs:element name="started" type="xs:date" />
@@ -36,6 +36,8 @@
                         <xs:element name="description" type="xs:string" />
                         <xs:element name="photo" type="photoType" />
                     </xs:sequence>
+                    <xs:attribute name="projectId" type="ProjectID" />
+
                 </xs:complexType>
             </xs:element>
 

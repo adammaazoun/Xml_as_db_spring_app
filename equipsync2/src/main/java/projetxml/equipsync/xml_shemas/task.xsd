@@ -15,15 +15,18 @@
             <xs:pattern value="[a-zA-Z0-9._%+-]+-+[0-9]{6}"/>
         </xs:restriction>
     </xs:simpleType>
-
             <xs:element name="Task" >
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="taskId" type="TaskID" />
-                        <xs:element name="projectId" type="ProjectID" />
+                        <xs:element name="taskName" type="xs:string"/>
+                        <xs:element name="deadline" type="xs:string"/>
+                        <xs:element name="status" type="xs:string"/>
                         <xs:element name="equipmentId" type="EquipmentID"/>
+                        <xs:element name="projectId" type="ProjectID" />
                         <xs:element name="description" type="xs:string"/>
                     </xs:sequence>
+                    <xs:attribute name="taskId" type="TaskID" />
+
                 </xs:complexType>
             </xs:element>
 

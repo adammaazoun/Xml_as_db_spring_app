@@ -34,7 +34,7 @@ import java.util.List;
         this.photo = photo;
     }
 
-    @XmlElement(name = "projectId")
+    @XmlAttribute(name = "projectId")
     // Getters and setters
     public String getProjectId() {
         return projectId;

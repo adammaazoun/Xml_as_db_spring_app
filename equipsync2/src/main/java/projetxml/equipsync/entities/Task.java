@@ -1,5 +1,6 @@
 package projetxml.equipsync.entities;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
@@ -36,7 +37,7 @@ public class Task {
     }
     // Getters and setters with @XmlElement annotations
 
-    @XmlElement(name = "taskId")
+    @XmlAttribute(name = "taskId")
     public String getTaskId() {
         return taskId;
     }
