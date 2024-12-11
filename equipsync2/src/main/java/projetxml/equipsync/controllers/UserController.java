@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import projetxml.equipsync.Services.EquipmentService;
 import projetxml.equipsync.Services.UserService;
 import projetxml.equipsync.entities.User;
 import org.springframework.web.bind.annotation.*;
+import projetxml.equipsync.request.Affect_req;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +19,11 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final EquipmentService equipmentService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EquipmentService equipmentService) {
         this.userService = userService;
+        this.equipmentService = equipmentService;
     }
     @GetMapping("/me")
 
@@ -41,10 +45,19 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+    @GetMapping("/hr/all-emloyes")
+    public List<User> getAll() {
+        return userService.getAllEmployes();
+    }
 
     @PostMapping("/hr/update")
     public String updatetUser(@RequestBody User user) {
         return userService.updateUser(user) ;
+    }
+
+    @PostMapping("/hr/affect")
+    public String affectUser(@RequestBody Affect_req req) {
+        return equipmentService.affect(req) ;
     }
 
     @DeleteMapping  ("/hr/{id}")

@@ -1,0 +1,256 @@
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background-color: #006aa350;
+    color: black;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+  .link{
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+  }
+  .sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar .menu li {
+    margin: 15px 0;
+  }
+  
+  .sidebar .menu li a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar .menu li a i {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+  .container {
+    font-family: 'Inter', Geneva, Verdana, sans-serif;
+    background-color: #fefcf4;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    width: 100vw; /* Ensures it covers the full width of the viewport */
+    margin: 0; /* Removes any default margins */
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    background-color: #fefcf4; /* Adjust the background color as needed */
+    /* Optional: add a border for better separation */
+  }
+  .user-info {
+    text-align: right;
+  }
+  
+  .user-info h3,
+  .user-info p {
+    margin: 0;
+    color: #666;
+    font-size:xx-small;
+
+  }
+  .logo {
+    height: 100px; /* Adjust the logo height as needed */
+  }
+  .search-btn{
+    color:#666;
+    background-color: transparent;
+    border-radius:5px  ;
+    border-color: #666;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between user info and button */
+  }
+
+  .top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Makes sure there's space between the elements */
+  width: 50%;
+  }
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .search-container {
+    position: relative;
+    display: flex;
+
+  }
+  
+  .search-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+    
+  }
+  
+  .btn {
+    padding: 8px 12px;
+    border:1px solid;
+    border-radius: 4px;
+    color: #4CAF50;
+    background-color: #fefcf4;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .add-btn {
+    color: #4CAF50;
+  }
+  
+  .affect-equipment-btn {
+    color: orange;
+  }
+  
+  .filter-btn {
+    color: #2196F3;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    padding: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .employee-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .employee-details {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .employee-status {
+    font-size: 18px;
+    color: rgb(14, 225, 14);
+    font-weight: bold;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .edit-btn {
+    background-color: #2196F3;
+    color: #fefcf4;
+    border: 1px #FFFFFF;
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: #fefcf4;
+  }
+  
+  .more-btn {
+    background-color: #ccc;
+    color: black;
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 50% opacity for dimming */
+    z-index: 999; /* Make sure it's above the content */
+  }
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefcf4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Modal should be above the overlay */
+    width: 50%; /* You can adjust this */
+    max-width: 90%; /* Makes sure it adapts to smaller screens */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+  }
+  
+  /* Form actions buttons */
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Add some spacing for form fields */
+  .form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  /* Optional: Style the submit and cancel buttons */
+  
+  .out-btn{
+    color:red
+  }
+  .submit-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+  }

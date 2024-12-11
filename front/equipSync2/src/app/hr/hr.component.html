@@ -1,0 +1,136 @@
+
+<div class="layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <ul class="menu">
+      <img src="/blue_logo.png" alt="EquipSync Logo" class="logo" />
+
+      <li><button class="link" (click)="refrech()" style="font-weight:bolder;"><i class="fa fa-users"></i> Employees</button></li>
+      <li><button class="link" (click)="goToEquipment()" style="color: gray;"><i class="fa fa-cogs"></i> Equipment</button></li>
+      </ul>
+  </nav>
+  <div class="container">
+  <header class="header">
+    <div class="header-left">
+    </div>
+    <div class="header-right">
+      <div class="user-info">
+        <h3>{{ user.firstname }} {{ user.lastname }}</h3>
+        <p>{{ user.role }} Manager</p>
+      </div>
+      <button class="btn out-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </header>
+  <div class="top"><h1 class="page-title">Employes</h1>
+    <div class="search-container">
+      <input type="text" placeholder="Search for anything..." class="search-input" />
+      <button class=" search-btn" (click)="search()">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+  <div class="actions">
+      
+    <button class="btn add-btn" (click)="openInsertModal()">ADD</button>
+    <button class="btn affect-equipment-btn" (click)="openAffectModal()">AFFECT Equipment</button>
+  
+      
+  </div>
+  <br>
+  <div class="card-grid">
+    <div class="card" *ngFor="let emp of employees">
+      <div class="card-content" *ngIf="emp.role === 'EMPLOYEE'">
+        <h2 class="employee-name">{{ emp.username }}</h2>
+        <p class="employee-details">{{ emp.firstname }} {{ emp.lastname }}</p>
+        <p class="employee-status">userId: {{ emp.userId }}</p>
+        <p class="employee-status">e-mail: {{ emp.email }}</p>
+        <div class="card-actions">
+          <button class="btn edit-btn">
+            <i class="fa fa-pencil" (click)="openEditModal(emp)"></i>
+          </button>
+          <button class="btn delete-btn" (click)="delete(emp.userId)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- the form -->
+  <div class="modal-overlay" *ngIf="formEditing || formInserting" >
+
+  <div class="modal" *ngIf="formEditing || formInserting">
+    <div class="modal-content">
+      <h2>
+        {{ formEditing ? "Edit Employee" : "Add Employee" }}
+      </h2>
+      <div class="form-group">
+        <label>UserId</label>
+        <input type="text" [(ngModel)]="employee.userId" required />
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="employee.username" required />
+      </div>
+
+      <div class="form-group">
+        <label>Initial password </label>
+        <input type="password" [(ngModel)]="employee.password" required />
+      </div>
+
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" [(ngModel)]="employee.firstname" required />
+      </div>
+
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" [(ngModel)]="employee.lastname" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="employee.email" required />
+      </div>
+      
+      
+
+      <!-- Skills Section -->
+      <div class="skills-section">
+        <h3>Skills</h3>
+        <div
+          *ngFor="let skill of employee.skills; let i = index"
+          class="skill-input"
+        >
+          <input
+            type="text"
+            placeholder="Skill Name"
+            [(ngModel)]="skill.name"
+          />
+          
+          <button (click)="removeSkill(i)" class="btn remove-btn">
+            Remove
+          </button>
+        </div>
+        <button (click)="addSkill()" class="btn add-skill-btn">
+          Add Skill
+        </button>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          (click)="formEditing ? update() : insert()"
+          class="btn submit-btn"
+        >
+          {{ formEditing ? "Update" : "Add" }}
+        </button>
+        <button (click)="cancelModal()" class="btn cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+</div>
+</div>

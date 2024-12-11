@@ -1,0 +1,47 @@
+
+<div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <ul class="menu">
+        <img src="/blue_logo.png" alt="EquipSync Logo" class="logo" />
+  
+        <li><button class="link" (click)="goToEmployees()" style="color: gray;"><i class="fa fa-users"></i> Employees</button></li>
+        <li><button class="link" (click)="refrech()" style="font-weight:bolder;"><i class="fa fa-cogs"></i> Equipment</button></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <header class="header">
+      <div class="header-left">
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <h3>{{ user.firstname }} {{ user.lastname }}</h3>
+          <p>{{ user.role }} Manager</p>
+        </div>
+        <button class="btn out-btn" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </header>
+    <div class="top"><h1 class="page-title">Equipments</h1>
+      <div class="search-container">
+        <input type="text" placeholder="Search for anything..." class="search-input" />
+        <button class=" search-btn" (click)="search()">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    
+    <br>
+    <div class="card-grid">
+      <div class="card" *ngFor="let eq of equipment">
+        
+          <h2 class="employee-name">{{ eq.equipmentId }}</h2>
+          <p class="employee-details">{{ eq.category }} </p>
+          <p class="employee-details">details: {{ eq.details }}</p>
+          <p class="employee-status">Status: {{ eq.status }}</p>
+        
+      </div>
+    </div>
+  </div>
+  </div>

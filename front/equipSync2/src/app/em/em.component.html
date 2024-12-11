@@ -1,0 +1,138 @@
+
+<div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <ul class="menu">
+        <img src="/blue_logo.png" alt="EquipSync Logo" class="logo" />
+  
+        <li><button class="link" (click)="goToEmployees()" style="color: gray;"><i class="fa fa-users"></i> Employees</button></li>
+        <li><button class="link" (click)="refrech()" style="font-weight:bolder;"><i class="fa fa-cogs"></i> Equipment</button></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <header class="header">
+      <div class="header-left">
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <h3>{{ user.firstname }} {{ user.lastname }}</h3>
+          <p>{{ user.role }} Manager</p>
+        </div>
+        <button class="btn out-btn" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </header>
+    <div class="top"><h1 class="page-title">Equipments</h1>
+      <div class="search-container">
+        <input 
+        type="text" 
+        placeholder="Search for anything..." 
+        class="search-input" 
+        [(ngModel)]="searchTerm"
+        (input)="search()"
+      />        <button class=" search-btn" (click)="search()">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="actions">
+      
+        <button class="btn add-btn" (click)="openInsertModal()">ADD</button>
+      
+          
+      </div>
+    <br>
+    <div class="card-grid">
+      <div class="card" *ngFor="let eq of equipment">
+        <img class="imgcard" *ngIf="eq.photo" [src]="getImageSrc(eq.photo)" alt="Equipment Photo">
+
+          <h2 class="employee-name">{{ eq.equipmentId }}</h2>
+          <p class="employee-details">{{ eq.category }} </p>
+          <p class="employee-details">details: {{ eq.details }}</p>
+          <p class="employee-status">Status: {{ eq.status }}</p>
+          <div class="card-actions">
+            <button class="btn edit-btn">
+              <i class="fa fa-pencil" (click)="openEditModal(eq)"></i>
+            </button>
+            <button class="btn delete-btn" (click)="delete(eq.equipmentId)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+      </div>
+    </div>
+    <div class="modal-overlay" *ngIf="formEditing || formInserting" >
+
+        <div class="modal" *ngIf="formEditing || formInserting">
+          <div class="modal-content">
+            <h2>
+              {{ formEditing ? "Edit Equipment" : "Add Equipment" }}
+            </h2>
+            <div class="form-group">
+              <label>EquipmentId</label>
+              <input type="text" [(ngModel)]="equip.equipmentId" required />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" [(ngModel)]="equip.category" required />
+            </div>
+      
+            <div class="form-group">
+              <label>Details </label>
+              <input type="text" [(ngModel)]="equip.details" required />
+            </div>
+      
+            <div class="form-group">
+              <label>Status</label>
+              <input type="text" [(ngModel)]="equip.status" required />
+            </div>
+      
+            <div class="form-group">
+              <label>Image</label>
+              <input 
+              type="file" 
+              (change)="onFileSelected($event)" 
+              accept="image/*"
+            >            </div>
+      
+           
+            
+            
+      
+            <!-- Skills Section -->
+            <div class="skills-section">
+              <h3>Tasks</h3>
+              <div
+                *ngFor="let skill of equip.tasks; let i = index"
+                class="skill-input"
+              >
+                <input
+                  type="text"
+                  placeholder="Skill Name"
+                  [(ngModel)]="skill.task"
+                />
+                
+                <button (click)="removeSkill(i)" class="btn remove-btn">
+                  Remove
+                </button>
+              </div>
+              <button (click)="addSkill()" class="btn add-skill-btn">
+                Add task
+              </button>
+            </div>
+      
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button
+                (click)="formEditing ? update() : insert()"
+                class="btn submit-btn"
+              >
+                {{ formEditing ? "Update" : "Add" }}
+              </button>
+              <button (click)="cancelModal()" class="btn cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+        </div>
+  </div>
+  </div>

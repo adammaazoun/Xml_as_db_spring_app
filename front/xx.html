@@ -1,0 +1,97 @@
+<div class="hr-container">
+    <!-- Header Section -->
+    <header class="header">
+      <h1 class="page-title">Employee Management</h1>
+      <div class="actions">
+        <button class="btn add-btn" (click)="openInsertModal()">
+          Add Employee
+        </button>
+      </div>
+    </header>
+  
+    <!-- Employee Cards Grid -->
+    <div class="card-grid">
+      <div class="card" *ngFor="let emp of employees">
+        <div class="card-content" *ngIf="emp.role === 'EMPLOYEE'">
+          <h2 class="employee-name">{{ emp.username }}</h2>
+          <p class="employee-details">{{ emp.firstname }} {{ emp.lastname }}</p>
+          <div class="card-actions">
+            <button class="btn edit-btn" (click)="openEditModal(emp)">
+              Edit
+            </button>
+            <button class="btn delete-btn" (click)="delete(emp.userId)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Employee Form Modal -->
+    <div class="modal" *ngIf="formEditing || formInserting">
+      <div class="modal-content">
+        <h2>
+          {{ formEditing ? "Edit Employee" : "Add Employee" }}
+        </h2>
+  
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" [(ngModel)]="employee.username" required />
+        </div>
+  
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" [(ngModel)]="employee.firstname" required />
+        </div>
+  
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" [(ngModel)]="employee.lastname" required />
+        </div>
+  
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="employee.email" required />
+        </div>
+  
+        <!-- Skills Section -->
+        <div class="skills-section">
+          <h3>Skills</h3>
+          <div
+            *ngFor="let skill of employee.skills; let i = index"
+            class="skill-input"
+          >
+            <input
+              type="text"
+              placeholder="Skill Name"
+              [(ngModel)]="skill.name"
+            />
+            <input
+              type="range"
+              min="0"
+              max="100"
+              [(ngModel)]="skill.proficiency"
+            />
+            <span>{{ skill.proficiency }}%</span>
+            <button (click)="removeSkill(i)" class="btn remove-btn">
+              Remove
+            </button>
+          </div>
+          <button (click)="addSkill()" class="btn add-skill-btn">
+            Add Skill
+          </button>
+        </div>
+  
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            (click)="formEditing ? update() : insert()"
+            class="btn submit-btn"
+          >
+            {{ formEditing ? "Update" : "Add" }}
+          </button>
+          <button (click)="cancelModal()" class="btn cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

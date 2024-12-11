@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import projetxml.equipsync.entities.Equipment;
 import org.springframework.stereotype.Service;
 import projetxml.equipsync.entities.User;
+import projetxml.equipsync.request.Affect_req;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -147,5 +148,26 @@ public class EquipmentService {
         }
     }
 
+
+    public String affect(Affect_req req) {
+        if (req == null || req.getEquipmentId() == null || req.getUserId() == null) {
+            throw new IllegalArgumentException("Invalid request: Equipment ID and User ID must not be null.");
+        }
+
+        // Try to fetch the equipment by ID
+        Equipment equipment = this.getEquipmentById(req.getEquipmentId());
+
+        if (equipment.getEmployeeId() != null) {
+            throw new IllegalStateException("Equipment with ID " + req.getEquipmentId() + " is already assigned to an employee.");
+        }
+
+        // Assign the user ID to the equipment
+        equipment.setEmployeeId(req.getUserId());
+
+        // Save the changes (assuming you have a method to update equipment)
+        this.updateEquipment(equipment);
+
+        return "Equipment with ID " + req.getEquipmentId() + " successfully assigned to user with ID " + req.getUserId() + ".";
+    }
 
 }

@@ -110,6 +110,30 @@ public class UserService {
             return new ArrayList<>();
         }
     }
+    public List<User> getAllEmployes() {
+        try {
+            baseXService.openDatabase("equipsync_db");
+
+            // XQuery to retrieve all user nodes as XML
+            String xQuery = "for $user in /users/user return $user";
+            String result = baseXService.executeXQuery(xQuery);
+
+            // Split result into individual user XML strings and deserialize
+            List<User> users = new ArrayList<>();
+            for (String userXml : result.split("(?=<user>)")) {
+                if (!userXml.trim().isEmpty()) {
+                    User user=xmlService.deserialize(userXml);
+                    if (user.getRole().equals("EMPLOYEE")){
+                        users.add(user);
+                    }
+                }
+            }
+            return users;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 
     public User getUserById(String id) {
         try {
